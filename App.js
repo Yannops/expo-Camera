@@ -17,6 +17,14 @@ export default function App() {
   const [isVideoRecording, setIsVideoRecording] = useState(null);
   const [haspermission, setHaspermission] = useState(null);
 
+  const toogleFlash = () => {
+    setFlashOn(flashOn === Camera.Constants.FlashMode.off ? Camera.Constants.FlashMode.on : Camera.Constants.FlashMode.off)
+  };
+
+  const toogleChangeCamera = () => {
+    setType(type === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back);
+  };
+
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
@@ -24,7 +32,7 @@ export default function App() {
     })();
 
     (async () => {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA);
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       setHaspermission(status === 'granted');
     })();
   }, []);
@@ -108,21 +116,17 @@ export default function App() {
     setOpen(false);
   }
 
- console.log(Camera.Constants.FlashMode.on);
+ console.log(flashOn);
 
   return (
     <>
       <Camera style={{ flex: 1 }} type={type} ref={camRef} >
         <Text style={{ marginTop: 70, textAlign: 'center', fontSize: 20, fontWeight: 'bold', color: '#fff' }}>App de Fotos</Text>
         <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row' }}>
-          <TouchableOpacity style={{ position: "absolute", bottom: 20, left: 20 }} onPress={() => {
-            setType(type === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back);
-          }}>
+          <TouchableOpacity style={{ position: "absolute", bottom: 20, left: 20 }} onPress={() => toogleChangeCamera()}>
             <MaterialCommunityIcons name="camera-switch" color="#fff" size={35} />
           </TouchableOpacity>
-          <TouchableOpacity style={{ position: "absolute", bottom: 100, left: 20 }}  onPress={() => {
-            setFlashOn(flashOn === Camera.Constants.FlashMode.on ? console.log('show') : console.log('fudeu'));
-          }}>
+          <TouchableOpacity style={{ position: "absolute", bottom: 100, left: 20 }}  onPress={() => toogleFlash()}>
             <Entypo name="flash" color="#fff" size={35} />
           </TouchableOpacity>
         </View>
