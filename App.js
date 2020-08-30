@@ -116,7 +116,6 @@ export default function App() {
     setOpen(false);
   }
 
- console.log(flashOn);
 
   return (
     <>
